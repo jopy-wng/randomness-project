@@ -1,7 +1,11 @@
 Web VPython 3.2
 import random
 
+scene = canvas(width = 600, height = 400)
+scene.userzoom = False
+
 inp = int(input("How many dice would you like? (1–10): "))
+cutInp = input("Cut? Enter y/n")
 
 numOfDice = 0
 
