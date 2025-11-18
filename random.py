@@ -97,6 +97,30 @@ def faceCamera(dice, num):
     
     if mag(axis) > 0.001: #checks there needs to be a rotation as the axis would not be zero
         dice.rotate(angle=angle, axis=axis.norm())
+        
+def faceCameraFiveSided(dice, num):
+    dice.axis = vector(1, 0, 0)
+    dice.up = vector(0, 1, 0)
+    
+    apex_height = 0.5
+    base_size = 1.0
+    
+    face1_normal = vector(0, 0.6, 1).norm()
+    face2_normal = vector(1, 0.6, 0).norm()
+    face3_normal = vector(-1, 0.6, 0).norm()
+    face4_normal = vector(0, 0.6, -1).norm()
+    face5_normal = vector(0, -1, 0)
+    
+    faces = [face1_normal, face2_normal, face3_normal, face4_normal, face5_normal]
+    
+    face = faces[num - 1]
+    target = -scene.forward.norm()
+    
+    angle = diff_angle(face, target)
+    axis = cross(face, target)
+    
+    if mag(axis) > 0.001:
+        dice.rotate(angle=angle, axis=axis.norm())
 
 for d in dice_list:
     randOr(d)
