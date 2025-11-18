@@ -66,28 +66,45 @@ axes = [vector(random.uniform(-1, 1),
                random.uniform(-1, 1)).norm() for _ in range(numOfDice)]
 
 spinTime = 0
-spin = True
 
-while (spinTime < 1.5) and (spin == True):
+while spinTime < 1.5:
     rate(60)
     spinTime += 0.02
     # enumerate() in Python is a built-in function that adds a counter to an iterable (like a list, tuple, or string) and returns an enumerate object.
     for i, d in enumerate(dice_list):
         d.rotate(angle = 0.3, axis = axes[i])
-        
-if spinTime >= 1.5:
-    spin = False
+    
 
 def randOr(d):
     # random.uniform(a, b) ensures that any number between a and b is equally likely to be generated.
     d.rotate(angle = random.uniform(0, 2 * pi), axis = vector(1, 0, 0))
     d.rotate(angle = random.uniform(0, 2 * pi), axis = vector(0, 1, 0))
     d.rotate(angle = random.uniform(0, 2 * pi), axis = vector(0, 0, 1))
+    
+def faceCamera(dice, num):
+    #reset dice to default orientation
+    dice.axis = vector(1, 0, 0)
+    dice.up = vector(0, 1, 0)
+  
+    faces = [vector(0, 1, 0), vector(0, 0, 1), vector(1, 0, 0), vector(-1, 0, 0), vector(0, 0, -1), vector(0, -1, 0)]
+    
+    face = faces[num - 1]
+    target = -scene.forward.norm()  #point to camera
+    
+    #calculate rotation
+    angle = diff_angle(face, target)
+    axis = cross(face, target)
+    
+    if mag(axis) > 0.001: #checks there needs to be a rotation as the axis would not be zero
+        dice.rotate(angle=angle, axis=axis.norm())
 
 for d in dice_list:
     randOr(d)
 
 results = [random.randint(1, 6) for i in range(inp)]
+
+for d, result in zip(dice_list, results):
+    faceCamera(d, result)
 
 counterOne = 1
 counterTwo = 1
@@ -118,9 +135,6 @@ for i in range(6):
     tableText += f" {i+1}   |    {num[i]}\n"
 
 wtext(text=tableText)
-
-if spin = False:
-    print("O")
 
 
 gbar = graph(title = "Dice Roll Frequencies", xtitle = "Possible Sides", ytitle = "Times Rolled")
