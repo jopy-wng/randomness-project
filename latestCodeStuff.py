@@ -7,10 +7,10 @@ while True:
         if 1 <= inp <= 1000000:
             break
         else:
-            inp = 1
+            inp = 10
             break
     except:
-        inp = 1
+        inp = 10
         break
 
 while True:
@@ -20,10 +20,10 @@ while True:
         if 1 <= iters <= 2000:
             break
         else:
-            iters = 50
+            iters = 1000
             break
     except:
-        iters = 50
+        iters = 1000
         break
 
 r = 4.0
@@ -143,4 +143,3 @@ def reroll(evt=None):
 
 reroll()
 button(text="Reroll", bind=reroll)
-
