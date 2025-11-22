@@ -7,10 +7,10 @@ while True:
         if 1 <= inp <= 1000000:
             break
         else:
-            inp = 10
+            inp = 1
             break
     except:
-        inp = 10
+        inp = 1
         break
 
 while True:
@@ -20,10 +20,10 @@ while True:
         if 1 <= iters <= 2000:
             break
         else:
-            iters = 1000
+            iters = 500
             break
     except:
-        iters = 1000
+        iters = 500
         break
 
 r = 4.0
@@ -81,11 +81,11 @@ for i in range(numOfDiceAnimate):
     x_pos = start_x + 2 * i
     dice_list.append(make_die(x_pos))
 
-gbar_sum = graph(title="Sum Frequency", xtitle="Sum", ytitle="Frequency")
-bar_graph_sum = gvbars(color=color.red)
+gbar_avg = graph(title="Average of Dice Rolls", xtitle="Average", ytitle="Frequency")
+bar_graph_avg = gvbars(color=color.red, delta=0.01)
 gbar_face = graph(title="Dice Face Frequency", xtitle="Face", ytitle="Frequency")
 bar_graph_face = gvbars(color=color.blue)
-freq_sum = {}
+freq_avg = {}
 freq_face = {f: 0 for f in range(1,7)}
 table_text = wtext(text="")
 
@@ -102,9 +102,9 @@ def faceCamera(dice, num):
         dice.rotate(angle=angle, axis=axis.norm())
 
 def update_graphs():
-    bar_graph_sum.data = []
-    for s in sorted(freq_sum):
-        bar_graph_sum.plot(pos=(s,freq_sum[s]))
+    bar_graph_avg.data = []
+    for avg in sorted(freq_avg):
+        bar_graph_avg.plot(pos=(avg,freq_avg[avg]))
     bar_graph_face.data = []
     for f in freq_face:
         bar_graph_face.plot(pos=(f,freq_face[f]))
@@ -133,8 +133,8 @@ def reroll(evt=None):
     results = []
     for _ in range(numOfDice):
         results.append(chaotic_die())
-    total = sum(results)
-    freq_sum[total] = freq_sum.get(total,0) + 1
+    avg = round(sum(results)/numOfDice, 2)
+    freq_avg[avg] = freq_avg.get(avg,0) + 1
     for r in results:
         freq_face[r] += 1
     update_graphs()
